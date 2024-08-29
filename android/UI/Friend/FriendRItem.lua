@@ -51,9 +51,11 @@ function Refresh(_data, _sign)
 		CSAPI.LoadImg(lineImg, "UIs/Friend/" .. onlineName .. ".png", true, nil, true)
 		local onlineStr = data:IsOnLine() and 12015 or 12016
 		onlineStr = LanguageMgr:GetByID(onlineStr)
-		if sign ~= 2 then
+
+		--修改部分
+		--if sign ~= 2 then
 			onlineStr = data:GetOnLine()
-		end
+		--end
 		-- CSAPI.SetText(txtOnline, "[" .. LanguageMgr:GetByID(onlineStr) .. "]")
 		CSAPI.SetText(txtOnline, "[" .. onlineStr .. "]")
 		local color = data:IsOnLine() and {255, 193, 70, 255} or {150, 150, 146, 255}
@@ -102,14 +104,18 @@ function SetSupport()
 	end	
 end
 
+--修改部分
 --助战点击回调
 function OnSupportClickCB(item)
-	currItem = item
-	local ix = sign == 2 and FriendIxType.FriendSreach or FriendIxType.FriendList
-	if item.GetCid() then
-		FriendProto:GetFriendCard(data:GetUid(), {item.GetCid()}, ix, OnCardInfoCallBack)
+	if sign == 2 then
+		EventMgr.Dispatch(EventType.Friend_Apply_Panel, this)
+	else
+		currItem = item
+		local ix = sign == 2 and FriendIxType.FriendSreach or FriendIxType.FriendList
+		if item.GetCid() then
+			FriendProto:GetFriendCard(data:GetUid(), {item.GetCid()}, ix, OnCardInfoCallBack)
+		end
 	end
-	--FriendProto:GetAssitInfo(data:GetUid(), OnCardInfoCallBack)
 end
 
 --获取助战卡牌数据回调
@@ -298,9 +304,11 @@ function SetRemoveTween()
 	EventMgr.Dispatch(EventType.Friend_UI_Remove)
 end
 
+--修改部分
 --添加
 function OnClickAdd()
-	EventMgr.Dispatch(EventType.Friend_Apply_Panel, this)
+	BuildingProto:FlrTradeOrders(data:GetUid())
+	MatrixMgr:OpenMatrixTrading(data:GetUid())
 end
 
 --申请

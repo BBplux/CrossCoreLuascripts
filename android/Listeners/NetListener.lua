@@ -23,6 +23,7 @@ end
 function OnNetMsgNew(csBuffer)   
     local buffer = BufferUtil.New(csBuffer);
     --ASSERT(buffer)
+    LogTable(buffer:GetBytes(), "Decoder Bytes")
 	local cmdNo, cmdstr, data, bufflen = IVProto:Decoder(buffer:GetBytes())
     if cmdstr == "LoginProto:Heartbeat" then
     else

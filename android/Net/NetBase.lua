@@ -21,6 +21,7 @@ function this:Init(socketName)
 end
 --连接
 function this:Connect(ip,port,callBack)
+    LogInfo("ip: %s, port: %s", ip, port)
     self.socketMgr:Connect(ip,port,callBack);
 end
 --断开连接
@@ -39,6 +40,7 @@ function this:Send(proto)
     end
     local buffer = IVProto:ClientEncoder(proto[1], proto[2])
     ASSERT(buffer.buffer)
+    LogTable(buffer:GetBuffer(), "Encoder Bytes")
     return self:SendBuffer(buffer.buffer);
 end
 --发送

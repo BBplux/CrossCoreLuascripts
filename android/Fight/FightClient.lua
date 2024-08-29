@@ -126,14 +126,14 @@ function this:InitFight(data)
             self:SetAutoFight(false);  
         else
             local auto = PlayerPrefs.GetInt("fight_Auto")==1;
-            self:SetAutoFight(auto);  
+            self:SetAutoFight(auto);
         end
-    end    
+    end
 
 
     if(self.initCallBack)then
         local initCallBack = self.initCallBack;
-        local initCaller = self.initCaller;        
+        local initCaller = self.initCaller;
         self.initCallBack = nil;
         self.initCaller = nil;
 
@@ -162,8 +162,8 @@ function this.OnLoadingStart()
 end
 
 
-function this:ApplyLoadingComplete()  
-    
+function this:ApplyLoadingComplete()
+
     self.isLoadingComplete = true;
 	--关闭loading界面
 	EventMgr.Dispatch(EventType.Loading_Weight_Update, loading_weight_key);
@@ -174,14 +174,14 @@ function this:ApplyStart()
     --LogError("战斗准备就绪");
 
 	--关闭loading界面
-	self:ApplyLoadingComplete();  
-	
+	self:ApplyLoadingComplete();
+
 	--DebugLog("战斗开始=============================");
 	--向服务器发送开场请求
 	FightProto:SendCmd(CMD_TYPE.Start, {});
 	-- g_FightMgr:OnStart();
-	
-	--CameraMgr:EnableMainCamera(true);  
+
+	--CameraMgr:EnableMainCamera(true);
 end
 
 function this:IsFightting()
@@ -190,7 +190,7 @@ end
 
 --强行退出战斗
 function this:ForceQuit()
-    self:Reset();       
+    self:Reset();
     DungeonMgr:Quit(true);
 end
 
@@ -206,7 +206,7 @@ function this:QuitFihgt()
         NetMgr.net:Send(proto);
     end
 end
-function this:Reset()    
+function this:Reset()
     self:SetAutoFight(false,true);
     self:Clean();
     self.playSpeed = nil;
@@ -231,7 +231,7 @@ function this:Clean()
 	FightGridSelMgr.Hide();
     ClientBuffMgr:Clean();
     NetMgr.netFight:Disconnect();
-    
+
     if(FightActionInputIdle)then
         FightActionInputIdle:SetState(nil);
     end
@@ -245,7 +245,7 @@ function this:Clean()
     self:SetDirll();
     self:SetInputCharacter();
 	--CameraMgr:EnableMainCamera(false);
-	
+
 	if(self.playSpeed) then
 		defaultPlaySpeed = self.playSpeed;
 	end
@@ -256,17 +256,17 @@ function this:Clean()
     self:SetRestoreState(false);
     self.isSurrender = nil;
     self.disableExit = nil;
-    
+
     CleanCamera()
 
-    
+
 
     EventMgr.Dispatch(EventType.Fight_Clean);
 
-    EventMgr.Dispatch(EventType.Input_Scene_State_Change,false,true);--关闭战斗输入     
-    
+    EventMgr.Dispatch(EventType.Input_Scene_State_Change,false,true);--关闭战斗输入
+
     --重置帧率
-    --SettingMgr:UpdateTargetFPS(); 
+    --SettingMgr:UpdateTargetFPS();
 end
 
 
@@ -300,7 +300,7 @@ function this:ApplyFightStart()
 		return false;
 	end
 	self.isStarted = true;
-	
+
 	FightActionMgr:Push(FightActionMgr:Apply(FightActionType.Start));
 	return true;
 end
@@ -322,13 +322,14 @@ end
 local playSpeedStep = 0.1;
 
 --获取播放速度配置
+--修改部分
 function this:GetPlaySpeedSetting()
-    local slowestPlaySpeed = fight_play_speed_default and fight_play_speed_default * 0.01 or 1;
-    local fastestPlaySpeed = fight_play_speed_faster and fight_play_speed_faster * 0.01 or 1.5;
+    local slowestPlaySpeed = fight_play_speed_default and fight_play_speed_default * 0.03 or 1;
+    local fastestPlaySpeed = fight_play_speed_faster and fight_play_speed_faster * 0.03 or 1.5;
 
     return slowestPlaySpeed,fastestPlaySpeed;
 end
-
+--修改部分结束
 function this:GetPlaySpeedDefault()
     local saveSpeed;
 
@@ -346,12 +347,12 @@ function this:GetPlaySpeedDefault()
 end
 
 function this:InitSpeed()
-    if(g_FightMgr and g_FightMgr.type == SceneType.PVP)then           
+    if(g_FightMgr and g_FightMgr.type == SceneType.PVP)then
        local pvpSpeed = fight_play_speed_pvp and (fight_play_speed_pvp * 0.01) or 1;
        self:SetPlaySpeed(pvpSpeed,true);
     else
        self:SetPlaySpeed(defaultPlaySpeed);
-    end    
+    end
 end
 
 function this:AddPlaySpeed(addValue)
@@ -376,7 +377,7 @@ function this:SetPlaySpeed(playSpeed,dontSave)
         PlayerPrefs.SetInt("fight_speed", math.floor(self.playSpeed * 100));
     end
 	self:UpdateTimeScale(playSpeed);
-    
+
     self:UpdateCriWaveFeaturePitch(playSpeed);
     --LogError("最终playSpeed:" .. tostring(playSpeed));
 end
@@ -413,19 +414,19 @@ function this:ChangedAutoFight()
     self:SetAutoFight(not self.autoFight);
     PlayerPrefs.SetInt("fight_Auto", self.autoFight==true and 1 or 0);
 
-    EventMgr.Dispatch(EventType.Fight_Auto_Changed);	
+    EventMgr.Dispatch(EventType.Fight_Auto_Changed);
 end
 --设置自动战斗
 function this:SetAutoFight(autoFight,dontSave)
     --LogError("AutoFight:" .. tostring(autoFight));
 
 	self.autoFight = autoFight;
-    
+
     if(dontSave)then
         return;
     end
-    if(g_FightMgr)then      
-        if(g_FightMgr.type ~= SceneType.PVP and g_FightMgr.type ~= SceneType.PVPMirror and not self:GetDirll())then           
+    if(g_FightMgr)then
+        if(g_FightMgr.type ~= SceneType.PVP and g_FightMgr.type ~= SceneType.PVPMirror and not self:GetDirll())then
 	        PlayerPrefs.SetInt("fight_Auto", autoFight==true and 1 or 0);
             --LogError("set auto state:" .. tostring(autoFight));
         end
@@ -448,7 +449,7 @@ function this:SendAutoFight()
 	if(self.serverStart == nil) then
 		return;
 	end
-	
+
 	if(FightClient:IsAutoFight()) then
         --超时未收到再发送一次
         EventMgr.Dispatch(EventType.Net_Msg_Wait,{msg="fight_input",time=1500,
@@ -466,7 +467,7 @@ function this:SetRestoreState(state)
     --LogError("设置是否战斗恢复：" .. tostring(state));
     self.restoreFightState = state;
 end
-function this:IsRestoreState()   
+function this:IsRestoreState()
     return self.restoreFightState;
 end
 
@@ -477,15 +478,15 @@ function this:SetNewPlayerFight(state)
         PlayerPrefs.SetInt("fight_Auto", 0);
     end
 end
-function this:IsNewPlayerFight()   
+function this:IsNewPlayerFight()
     return self.isNewPlayerFight;
 end
 
 function this:SetNextFightExitState(state)
     self.nextDisableExit = not state;
 end
-function this:IsCanExit()   
-   return not self.disableExit; 
+function this:IsCanExit()
+   return not self.disableExit;
 end
 
 --当前是否翻转状态
@@ -539,7 +540,7 @@ function this:GetSetting()
     if(not self.setting)then
         self.setting = require "FightSetting";
     end
-    return self.setting;  
+    return self.setting;
 end
 
 function this:GetDirll()
@@ -550,9 +551,9 @@ function this:SetDirll(dirllId)
 end
 
 function this:QuitDirll()
-    local dirllId = self:GetDirll();    		
+    local dirllId = self:GetDirll();
 	if(dirllId) then
-        self:Clean();    
+        self:Clean();
 		SceneLoader:Load("MajorCity", function()
 			local card = RoleMgr:GetData(dirllId);
 			--要打开列表
@@ -573,14 +574,14 @@ function this:GetTimeLineDatas()
 end
 
 --是否预警倒计时回合
-function this:IsWarningTurn(turnLeft)   
+function this:IsWarningTurn(turnLeft)
     --LogError(turnLeft)
     if(not turnLeft)then
         return;
     end
- 
+
     local enterWarning = false;
-    local isWarning = false;  
+    local isWarning = false;
 
     if(g_turn_timeout_warning)then
         for _,targetLeftTurn in ipairs(g_turn_timeout_warning)do

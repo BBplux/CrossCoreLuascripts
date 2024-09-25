@@ -482,11 +482,11 @@ function SetViewLayout(openSetting)
 	elseif openSetting==TeamOpenSetting.GlobalBoss then
 		isSkill = false		
 	elseif openSetting==TeamOpenSetting.RogueT then
-		-- if(data.isSkill~=nil)then 
+		-- if(data.isSkill~=nil)then
 		-- 	isSkill = data.isSkill
-		-- end 
+		-- end
 		isSkill = false
-	end 
+	end
 	CSAPI.SetGOActive(btn_ai,isAI)
 	CSAPI.SetGOActive(btn_skill,isSkill)
 end
@@ -1372,7 +1372,7 @@ function CheckCardCanPass(card)
 	if card==nil then
 		return false;
 	end
-	if(openSetting==TeamOpenSetting.Tower)then 
+	if(openSetting==TeamOpenSetting.Tower)then
 		local info=nil;
 		local assistData=card:GetAssistData();
 		if assistData~=nil then
@@ -1383,11 +1383,6 @@ function CheckCardCanPass(card)
 		if info and info.tower_hp<=0  then --HP为0，无法上阵
 			return false;
 		end
-	end 
-	if cond then
-		local result=cond:CheckCard(teamData,card);
-		-- LogError(tostring(card:GetID()).."检测限制--------------->"..tostring(result))
-		return result;
 	end
 	return true;
 end
@@ -1790,9 +1785,9 @@ function SetSortObj()
 		tempID=2;
 	elseif openSetting== TeamOpenSetting.PVE then
 		tempID=3;
-	elseif(openSetting==TeamOpenSetting.Tower or openSetting==TeamOpenSetting.TotalBattle)then 	
+	elseif(openSetting==TeamOpenSetting.Tower or openSetting==TeamOpenSetting.TotalBattle)then
 		tempID = 25
-	elseif(openSetting==TeamOpenSetting.RogueT)then 
+	elseif(openSetting==TeamOpenSetting.RogueT)then
 		tempID = 26
 	else
 		tempID=4;

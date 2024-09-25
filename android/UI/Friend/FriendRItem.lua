@@ -298,9 +298,11 @@ function SetRemoveTween()
 	EventMgr.Dispatch(EventType.Friend_UI_Remove)
 end
 
+--修改部分
 --添加
 function OnClickAdd()
-	EventMgr.Dispatch(EventType.Friend_Apply_Panel, this)
+	BuildingProto:FlrTradeOrders(data:GetUid())
+	MatrixMgr:OpenMatrixTrading(data:GetUid())
 end
 
 --申请

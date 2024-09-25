@@ -21,6 +21,7 @@ function this:Init(socketName)
 end
 --连接
 function this:Connect(ip,port,callBack)
+    LogInfo("ip: %s, port: %s", ip, port)
     self.socketMgr:Connect(ip,port,callBack);
 end
 --断开连接

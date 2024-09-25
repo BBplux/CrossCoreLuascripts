@@ -476,7 +476,7 @@ function SetViewLayout(openSetting)
 	--AI和战术
 	local isSkill = true
 	local isAI = true
-	if(TeamMgr.currentIndex ==eTeamType.Colosseum or TeamMgr.currentIndex ==(eTeamType.Colosseum + 1) or TeamMgr.currentIndex ==eTeamType.RogueT) then 
+	if(TeamMgr.currentIndex ==eTeamType.Colosseum or TeamMgr.currentIndex ==(eTeamType.Colosseum + 1) or TeamMgr.currentIndex ==eTeamType.RogueT) then
 		isSkill = false		
 		isAI= false
 	elseif openSetting==TeamOpenSetting.GlobalBoss then
@@ -1386,11 +1386,6 @@ function CheckCardCanPass(card)
 		if info and info.tower_hp<=0  then --HP为0，无法上阵
 			return false;
 		end
-	end 
-	if cond then
-		local result,lanID=cond:CheckCard(teamData,card);
-		-- LogError(tostring(card:GetID()).."检测限制--------------->"..tostring(result))
-		return result,lanID;
 	end
 	return true;
 end

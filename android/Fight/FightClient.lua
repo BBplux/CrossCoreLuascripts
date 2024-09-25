@@ -323,8 +323,8 @@ local playSpeedStep = 0.1;
 
 --获取播放速度配置
 function this:GetPlaySpeedSetting()
-    local slowestPlaySpeed = fight_play_speed_default and fight_play_speed_default * 0.01 or 1;
-    local fastestPlaySpeed = fight_play_speed_faster and fight_play_speed_faster * 0.01 or 1.5;
+    local slowestPlaySpeed = fight_play_speed_default and fight_play_speed_default * 0.03 or 1;
+    local fastestPlaySpeed = fight_play_speed_faster and fight_play_speed_faster * 0.03 or 1.5;
 
     return slowestPlaySpeed,fastestPlaySpeed;
 end

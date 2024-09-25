@@ -295,7 +295,16 @@ end
 
 -- 刷新对手
 function OnClickRefresh()
-    ExerciseMgr:FlushPracticeObj()
+    --修改部分
+    local cnt, maxCnt = ExerciseMgr:GetFlushCnt()
+    if cnt > 14 then
+        Tips.ShowTips("请重新进入完成刷新！")
+        ReloginAccount();
+        ExerciseMgr:GetPracticeInfo(true, true)
+        EventMgr.Dispatch(EventType.Exercise_Enemy_Update)
+    else
+        ExerciseMgr:FlushPracticeObj()
+    end
 end
 
 -- 跳转商店

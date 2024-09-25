@@ -1383,11 +1383,6 @@ function CheckCardCanPass(card)
 		if info and info.tower_hp<=0  then --HP为0，无法上阵
 			return false;
 		end
-	end 
-	if cond then
-		local result=cond:CheckCard(teamData,card);
-		-- LogError(tostring(card:GetID()).."检测限制--------------->"..tostring(result))
-		return result;
 	end
 	return true;
 end

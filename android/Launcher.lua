@@ -24,11 +24,7 @@ function Awake()
 end
 --初始化日志状态
 function InitLogState()
-	local logState = PlayerPrefs.GetInt("key_log_state");
-	
-	if(logState and logState > 0) then
-		_G.noLog = nil;
-	end
+	_G.noLog = nil;
 end
 
 function Launcher()

@@ -74,7 +74,6 @@ end
 ---1.SDK初始化完成返回
 function this.SDKShiryuSDKInitcomplete(datapacket)
     Log("-zilong--SDK init Success--------end---------------")
-    this.LoginSDK();
 end
 
 function this.LoginSDK()
